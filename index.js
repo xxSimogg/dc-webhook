@@ -1,10 +1,16 @@
-const { Client, Intents } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const express = require('express');
 const app = express();
 
 app.use(express.json());
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers
+  ]
+});
+
 const token = process.env.DISCORD_TOKEN;
 const guildId = '1318118466313519134';
 const roleId = '1390991178652188723';
@@ -12,7 +18,7 @@ const roleId = '1390991178652188723';
 client.login(token);
 
 app.post('/webhook', async (req, res) => {
-  const discordId = req.body.Nutzername;
+  const discordId = req.body.nutzername;
 
   if (!discordId) {
     return res.status(400).send('Discord-ID fehlt');
@@ -33,4 +39,3 @@ app.post('/webhook', async (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
   console.log('Server läuft');
 });
-
